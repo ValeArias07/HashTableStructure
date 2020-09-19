@@ -9,28 +9,30 @@ public class HashTable <K,V> implements  IHashTable <K, V>  {
 		hashMap = new Array<K, V>(HashElement.class, size);
 		m=size;
 	}
+	
+	@Override
+	public int hashFunction(int hashCode) {
+		int hash=hashCode%m;
+			if(hash<0) 
+				hash=hash*(-1);
+			return hash;
+	}
 
 	@Override
 	public void add(K key, V value) {
 		HashElement<K, V> element  = new HashElement <K,V> (key, value);
 
 		int hash=hashFunction(key.hashCode());
+		
 		if(!keyRepetead(hash,key)) {
 			if(hashMap.get(hash)!=null) {
+				///// Chaining Solver Coalition  *Adding in the first element*
 				HashElement<K, V> aux=  hashMap.get(hash);
-				while(aux.getNext()!=null) {
-					aux=aux.getNext();
-				}
-				aux.setNext(element);
-				element.setPrev(aux);
+				aux.setPrev(element);
 			}else{
 				hashMap.set(hash, element);
 			}
 		}
-	}
-	
-	public int hashFunction(int hashCode) {
-		return hashCode%m;
 	}
 
 	@Override
@@ -66,7 +68,8 @@ public class HashTable <K,V> implements  IHashTable <K, V>  {
 		boolean found=false;
 		
 		if(hashMap.get(hash)!=null){  /// This verifies if the position in the array is null
-			if(!(hashMap.get(hash).getKey().equals(key))) { /// This verifies if the first element in the slot contains the key
+			if(!(hashMap.get(hash).getKey().equals(key))) {/// This verifies if the first element in the slot contains the key
+				
 				if(hashMap.get(hash).getNext()!=null) {  /// This verifies if the slot has several HashElements
 					
 					HashElement <K,V> aux= hashMap.get(hash);
@@ -100,4 +103,6 @@ public class HashTable <K,V> implements  IHashTable <K, V>  {
 		}
 		return isRepetead;
 	}
+
+	
 }
