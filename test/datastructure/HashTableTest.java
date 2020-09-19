@@ -14,7 +14,6 @@ public class HashTableTest {
 	public void add() {
 		setUp1();
 		HashElement <String, String> aux= new HashElement<String,String>("Hola", "Saludo");
-		
 		hashTable.add(aux.getKey(), aux.getValue());
 		
 		hashTable.add("Hey", "Arnold");
